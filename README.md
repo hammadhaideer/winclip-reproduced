@@ -9,9 +9,9 @@
 
 ## About This Repository
 
-Anomaly Detection is my **core research specialization** at Xinjiang University. This repository is both a learning resource and a reflection of my active research — covering tabular, time-series, text, and visual anomaly detection.
+Anomaly Detection is my **core research specialization** at Xinjiang University. This repository is both a learning resource and a reflection of my active research, covering tabular, time-series, text, and visual anomaly detection.
 
-> "An anomaly is a data point that differs significantly from the majority — detecting it is a matter of safety, quality, and intelligence."
+> "An anomaly is a data point that differs significantly from the majority, detecting it is a matter of safety, quality, and intelligence."
 
 ## Repository Structure
 
