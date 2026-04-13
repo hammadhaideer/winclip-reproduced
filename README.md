@@ -1,27 +1,19 @@
-<div align="center">
-
-# 🔍 Anomaly Detection Playground
+# Anomaly Detection Playground
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-Latest-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org/)
 [![Research](https://img.shields.io/badge/Type-Research%20%2B%20Applied-blueviolet?style=for-the-badge)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
 
-*My primary research domain — statistical, ML, and deep learning methods for detecting the unusual.*
+*My primary research domain - statistical, ML, and deep learning methods for detecting the unusual.*
 
-</div>
-
----
-
-## 👤 About This Repository
+## About This Repository
 
 Anomaly Detection is my **core research specialization** at Xinjiang University. This repository is both a learning resource and a reflection of my active research — covering tabular, time-series, text, and visual anomaly detection.
 
 > "An anomaly is a data point that differs significantly from the majority — detecting it is a matter of safety, quality, and intelligence."
 
----
-
-## 📂 Repository Structure
+## Repository Structure
 
 ```
 anomaly-detection-playground/
@@ -57,9 +49,7 @@ anomaly-detection-playground/
 └── resources.md
 ```
 
----
-
-## 📓 Notebooks
+## Notebooks
 
 | # | Method | Domain | Dataset | Status |
 |---|--------|--------|---------|--------|
@@ -68,9 +58,7 @@ anomaly-detection-playground/
 | 03 | LSTM Anomaly | Time Series | NASA SMAP | ⏳ |
 | 04 | Text Anomaly | NLP | Custom Logs | ⏳ |
 
----
-
-## 🚀 Getting Started
+## Getting Started
 
 ```bash
 git clone https://github.com/YOUR_USERNAME/anomaly-detection-playground.git
@@ -79,17 +67,13 @@ pip install -r requirements.txt
 jupyter notebook
 ```
 
----
-
-## 🛠️ Tech Stack
+## Tech Stack
 
 `Python` · `scikit-learn` · `PyTorch` · `PyOD` · `NumPy` · `Pandas` · `Matplotlib`
 
----
+## Connect
 
-## 🤝 Connect
+[LinkedIn](https://www.linkedin.com/in/hammadhaideer)
+[GitHub](https://github.com/hammadhaideer)
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=flat&logo=linkedin)](https://linkedin.com/in/YOUR_PROFILE)
-[![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=flat&logo=github)](https://github.com/YOUR_USERNAME)
-
-> ⭐ Star this repo if you find it useful!
+⭐ Star this repo if you find it useful!
