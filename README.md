@@ -40,6 +40,91 @@ Match the paper's reported numbers within ±0.5 points:
 | 1-normal-shot | MVTec-AD | 93.1 → TBD | 95.2 → TBD |
 | 1-normal-shot | VisA | 83.8 → TBD | 96.4 → TBD |
 
+## Installation
+
+Clone and create the environment:
+
+```bash
+git clone https://github.com/hammadhaideer/winclip-reproduced.git
+cd winclip-reproduced
+conda env create -f environment.yml
+conda activate winclip
+```
+
+Or with pip in an existing environment:
+
+```bash
+pip install -r requirements.txt
+```
+
+## Datasets
+
+This repo evaluates on **MVTec-AD** and **VisA**. Download both, then point the code to a parent directory containing them:
+
+```bash
+export WINCLIP_DATA_ROOT=/path/to/anomaly_datasets
+```
+
+Expected layout:
+
+```text
+$WINCLIP_DATA_ROOT/
+├── mvtec_ad/
+│   ├── bottle/
+│   │   ├── train/good/*.png
+│   │   ├── test/<defect>/*.png
+│   │   └── ground_truth/<defect>/*_mask.png
+│   ├── cable/
+│   └── ... (15 categories)
+└── visa/
+    ├── candle/
+    ├── ... (12 categories)
+    └── split_csv/1cls.csv
+```
+
+| Dataset | Source | Categories |
+|---|---|---|
+| MVTec-AD | https://www.mvtec.com/company/research/datasets/mvtec-ad | 15 |
+| VisA | https://github.com/amazon-science/spot-diff | 12 |
+
+VisA is distributed with a split CSV file (`split_csv/1cls.csv`) that defines the train/test partition. The loader reads from this CSV — make sure it's present at the path above.
+
+## Run
+
+Single category, zero-shot:
+
+```bash
+python scripts/run_winclip.py --config configs/default.yaml \
+    --dataset mvtec_ad --category bottle --shot 0
+```
+
+Single category, 1-normal-shot:
+
+```bash
+python scripts/run_winclip.py --config configs/default.yaml \
+    --dataset mvtec_ad --category bottle --shot 1
+```
+
+Sweep all categories on both datasets, both 0-shot and 1-shot (~1 hour on a single GPU):
+
+```bash
+python scripts/run_all.py --datasets mvtec_ad visa --shots 0 1
+```
+
+Full paper reproduction (108 runs, ~1 hour total):
+
+```bash
+python scripts/run_all.py --datasets mvtec_ad visa --shots 0 1 2 4
+```
+
+Build the comparison table after runs complete:
+
+```bash
+python scripts/aggregate_results.py --results_dir results --shots 0 1
+```
+
+Per-experiment results land in `results/<dataset>_<category>_<shot>shot.json`. The aggregated table prints to stdout, comparing your numbers against the paper's reported values per (dataset, shot) combination.
+
 ## Roadmap
 
 - [ ] Repo scaffold, configs, dataset loader (reused from patchcore-reproduced)
