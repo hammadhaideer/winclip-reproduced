@@ -6,27 +6,28 @@
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.1%2B-EE4C2C?logo=pytorch&logoColor=white)](https://pytorch.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
-Paper: [WinCLIP: Zero-/Few-Shot Anomaly Classification and Segmentation](https://arxiv.org/abs/2303.14814) — Jeong et al., CVPR 2023
+Paper: [WinCLIP: Zero-/Few-Shot Anomaly Classification and Segmentation](https://arxiv.org/abs/2303.14814) - Jeong et al., CVPR 2023
 
 ## What this is
 
-End-to-end reproduction of WinCLIP — the first strong CLIP-based zero-shot anomaly detector — on MVTec-AD and VisA. Implements the compositional prompt ensemble, multi-scale window aggregation, and the few-normal-shot extension WinCLIP+.
+End-to-end reproduction of WinCLIP, the first strong CLIP-based zero-shot anomaly detector on MVTec-AD and VisA. Implements the compositional prompt ensemble, multi-scale window aggregation, and the few-normal-shot extension WinCLIP+.
 
-This is the second repo in a series of visual anomaly detection reproductions building toward UniVAD (CVPR 2025), my main thesis baseline. WinCLIP is one of UniVAD's six comparison methods in Table 1.
+This is the second reproduction in a series of visual anomaly detection methods I'm building toward UniVAD (CVPR 2025), my main thesis baseline. WinCLIP is one of UniVAD's six comparison methods in Table 1.
 
 ## Status
 
-🚧 In active development. Code lands over the coming week, results follow once GPU access returns.
+In active development. Code lands over the coming week, results follow once GPU access returns.
 
 ## Why WinCLIP
 
-WinCLIP shifted visual anomaly detection from "train a custom model per object" to "use a pretrained vision-language model with the right prompts." It's the first method on UniVAD's comparison list that uses a foundation model — making it conceptually the bridge between PatchCore-era methods (frozen ImageNet backbones) and the current foundation-model era of AD.
+WinCLIP is one of two foundation-model-based methods on UniVAD's comparison list (alongside AnomalyGPT). It shifted visual anomaly detection from "train a custom model per object" to "use a pretrained vision-language model with the right prompts" making it the conceptual bridge between PatchCore-era frozen-ImageNet-backbone methods and the current foundation-model era of AD.
 
-| | Zero-shot Image-AUROC | 1-shot Image-AUROC |
+| | Zero-shot Image-AUROC (MVTec-AD) | 1-shot Image-AUROC (MVTec-AD) |
 |---|---|---|
 | WinCLIP | 91.8 | — |
 | WinCLIP+ | — | 93.1 |
-| PatchCore (1-shot, baseline) | — | 83.4 |
+
+(Numbers from the WinCLIP paper.)
 
 ## Goal
 
@@ -42,7 +43,7 @@ Match the paper's reported numbers within ±0.5 points:
 ## Roadmap
 
 - [ ] Repo scaffold, configs, dataset loader (reused from patchcore-reproduced)
-- [ ] CLIP ViT-B/16+ backbone integration
+- [ ] CLIP ViT-B/16+ backbone integration via `open_clip`
 - [ ] Compositional prompt ensemble (state words × prompt templates)
 - [ ] Multi-scale window aggregation (window/patch/image-level)
 - [ ] Zero-shot anomaly classification and segmentation
