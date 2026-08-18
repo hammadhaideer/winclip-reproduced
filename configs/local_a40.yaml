@@ -2,7 +2,7 @@ method: winclip
 
 backbone:
   name: ViT-B-16-plus-240
-  pretrained: /home/hammad-25/reproductions/winclip_weights/open_clip_pytorch_model.bin
+  pretrained: ${WINCLIP_CHECKPOINT:-/path/to/open_clip_pytorch_model.bin}
   input_size: 240
 
 winclip:
