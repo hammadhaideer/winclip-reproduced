@@ -1,161 +1,144 @@
-# winclip-reproduced
+# WinCLIP Reproduced
 
-> Clean reproduction of **WinCLIP** (Jeong et al., CVPR 2023) on MVTec-AD and VisA — zero-shot and few-normal-shot anomaly classification and segmentation with CLIP.
+Independent reproduction workspace for **WinCLIP: Zero-/Few-Shot Anomaly Classification and Segmentation** (CVPR 2023).
 
-[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.1%2B-EE4C2C?logo=pytorch&logoColor=white)](https://pytorch.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
+This repository is part of a focused visual anomaly-detection reproduction series around CLIP-based industrial anomaly detection. The goal is to reproduce the major methods compared with AF-CLIP, document what matches, and keep transparent debugging records when a metric does not yet match the paper.
 
-Paper: [WinCLIP: Zero-/Few-Shot Anomaly Classification and Segmentation](https://arxiv.org/abs/2303.14814) - Jeong et al., CVPR 2023
+## Current status
 
-## What this is
+The current Anomalib-backed zero-shot run gives a near image-level reproduction, but pixel-level localization is not yet paper-correct in this environment because the Anomalib zero-shot anomaly maps are nearly constant for tested images.
 
-End-to-end reproduction of WinCLIP, the first strong CLIP-based zero-shot anomaly detector on MVTec-AD and VisA. Implements the compositional prompt ensemble, multi-scale window aggregation, and the few-normal-shot extension WinCLIP+.
+| Dataset | Shot | Image AUROC | Paper Image AUROC | Delta | Pixel AUROC | Paper Pixel AUROC | Status |
+|---|---:|---:|---:|---:|---:|---:|---|
+| MVTec-AD | 0 | 89.96 | 91.80 | -1.84 | 61.41 | 85.10 | Image near; pixel under investigation |
+| VisA | 0 | 75.36 | 78.10 | -2.74 | 57.09 | 79.60 | Image near; pixel under investigation |
 
-This is the second reproduction in a series of visual anomaly detection methods I'm building toward UniVAD (CVPR 2025), my main thesis baseline. WinCLIP is one of UniVAD's six comparison methods in Table 1.
+All values are percentages and macro-averaged across categories.
 
-## Status
+## What is included
 
-In active development. Code lands over the coming week, results follow once GPU access returns.
+- Dataset loaders for MVTec-AD and VisA.
+- A local prototype WinCLIP implementation.
+- An Anomalib-backed WinCLIP runner.
+- Zero-shot category-level JSON results for MVTec-AD and VisA.
+- Aggregation script for paper comparison.
+- Documentation of current reproduction status and known limitations.
 
-## Why WinCLIP
+## What is not claimed yet
 
-WinCLIP is one of two foundation-model-based methods on UniVAD's comparison list (alongside AnomalyGPT). It shifted visual anomaly detection from "train a custom model per object" to "use a pretrained vision-language model with the right prompts" making it the conceptual bridge between PatchCore-era frozen-ImageNet-backbone methods and the current foundation-model era of AD.
+This repository does **not** yet claim full WinCLIP reproduction because the pixel-level localization numbers are below the CVPR 2023 paper. The current evidence supports:
 
-| | Zero-shot Image-AUROC (MVTec-AD) | 1-shot Image-AUROC (MVTec-AD) |
-|---|---|---|
-| WinCLIP | 91.8 | — |
-| WinCLIP+ | — | 93.1 |
+- near reproduction of zero-shot image-level AUROC;
+- successful infrastructure for running all MVTec-AD and VisA categories;
+- an identified pixel-map issue requiring further debugging.
 
-(Numbers from the WinCLIP paper.)
+## Reproduction results
 
-## Goal
+Aggregate table:
 
-Match the paper's reported numbers within ±0.5 points:
+```text
+results/summary.csv
+```
 
-| Setting | Dataset | Image-AUROC | Pixel-AUROC |
-|---|---|---|---|
-| Zero-shot | MVTec-AD | 91.8 → TBD | 85.1 → TBD |
-| Zero-shot | VisA | 78.1 → TBD | 79.6 → TBD |
-| 1-normal-shot | MVTec-AD | 93.1 → TBD | 95.2 → TBD |
-| 1-normal-shot | VisA | 83.8 → TBD | 96.4 → TBD |
+Category-level Anomalib zero-shot results:
 
-## Installation
+```text
+results/raw/per_category_anomalib_zeroshot.csv
+```
 
-Clone and create the environment:
+Diagnostic run folders are ignored by Git by default.
+
+## Setup
 
 ```bash
-git clone https://github.com/hammadhaideer/winclip-reproduced.git
-cd winclip-reproduced
 conda env create -f environment.yml
 conda activate winclip
+pip install anomalib open_clip_torch
 ```
 
-Or with pip in an existing environment:
+The server used for the current reproduction had no direct access to HuggingFace, so the OpenCLIP checkpoint was downloaded separately and provided locally.
 
-```bash
-pip install -r requirements.txt
+Required checkpoint:
+
+```text
+timm/vit_base_patch16_plus_clip_240.laion400m_e31/open_clip_pytorch_model.bin
 ```
+
+Local SHA256 used:
+
+```text
+fa8eec9aff58e9215b9b44a977038179712694d3fc3a73eba62546bcff13deb3
+```
+
+The checkpoint is **not** redistributed in this repository.
 
 ## Datasets
 
-This repo evaluates on **MVTec-AD** and **VisA**. Download both, then point the code to a parent directory containing them:
+Set:
 
 ```bash
-export WINCLIP_DATA_ROOT=/path/to/anomaly_datasets
+export WINCLIP_DATA_ROOT=/path/to/winclip_data
 ```
 
 Expected layout:
 
 ```text
-$WINCLIP_DATA_ROOT/
+WINCLIP_DATA_ROOT/
 ├── mvtec_ad/
-│   ├── bottle/
-│   │   ├── train/good/*.png
-│   │   ├── test/<defect>/*.png
-│   │   └── ground_truth/<defect>/*_mask.png
-│   ├── cable/
-│   └── ... (15 categories)
 └── visa/
-    ├── candle/
-    ├── ... (12 categories)
-    └── split_csv/1cls.csv
 ```
-
-| Dataset | Source | Categories |
-|---|---|---|
-| MVTec-AD | https://www.mvtec.com/company/research/datasets/mvtec-ad | 15 |
-| VisA | https://github.com/amazon-science/spot-diff | 12 |
-
-VisA is distributed with a split CSV file (`split_csv/1cls.csv`) that defines the train/test partition. The loader reads from this CSV — make sure it's present at the path above.
 
 ## Run
 
-Single category, zero-shot:
+Single Anomalib-backed category:
 
 ```bash
-python scripts/run_winclip.py --config configs/default.yaml \
-    --dataset mvtec_ad --category bottle --shot 0
+CUDA_VISIBLE_DEVICES=0 python scripts/run_winclip_anomalib.py \
+  --dataset mvtec_ad \
+  --category bottle \
+  --shot 0 \
+  --output_dir results_anomalib_zs
 ```
 
-Single category, 1-normal-shot:
+Full zero-shot sweep:
 
 ```bash
-python scripts/run_winclip.py --config configs/default.yaml \
-    --dataset mvtec_ad --category bottle --shot 1
+python scripts/run_all_anomalib.py \
+  --datasets mvtec_ad visa \
+  --shots 0 \
+  --output_dir results_anomalib_zs
 ```
 
-Sweep all categories on both datasets, both 0-shot and 1-shot (~1 hour on a single GPU):
+Aggregate:
 
 ```bash
-python scripts/run_all.py --datasets mvtec_ad visa --shots 0 1
+python scripts/aggregate_results.py --results_dir results_anomalib_zs --shots 0
 ```
 
-Full paper reproduction (108 runs, ~1 hour total):
+## Known issue
 
-```bash
-python scripts/run_all.py --datasets mvtec_ad visa --shots 0 1 2 4
-```
+With Anomalib 2.6.0 in this environment, zero-shot image scores are meaningful, but the returned zero-shot anomaly maps can be nearly constant for individual images. This explains the gap between reproduced and paper pixel-level AUROC.
 
-Build the comparison table after runs complete:
-
-```bash
-python scripts/aggregate_results.py --results_dir results --shots 0 1
-```
-
-Per-experiment results land in `results/<dataset>_<category>_<shot>shot.json`. The aggregated table prints to stdout, comparing your numbers against the paper's reported values per (dataset, shot) combination.
-
-## Roadmap
-
-- [ ] Repo scaffold, configs, dataset loader (reused from patchcore-reproduced)
-- [ ] CLIP ViT-B/16+ backbone integration via `open_clip`
-- [ ] Compositional prompt ensemble (state words × prompt templates)
-- [ ] Multi-scale window aggregation (window/patch/image-level)
-- [ ] Zero-shot anomaly classification and segmentation
-- [ ] WinCLIP+ few-normal-shot extension with reference association
-- [ ] Empirical reproduction on MVTec-AD and VisA
-- [ ] Walkthrough notebook with prompt-ensemble visualization
-- [ ] Medium walkthrough post
+This repository keeps that finding visible instead of hiding it, because the purpose of the project is transparent reproduction.
 
 ## Reproduction series
 
-Part of a broader series reproducing UniVAD's full comparison set:
+Focused AF-CLIP comparison-chain reproduction:
 
-- [x] [patchcore-reproduced](https://github.com/hammadhaideer/patchcore-reproduced) — PatchCore (CVPR 2022)
-- [ ] **winclip-reproduced** — WinCLIP (CVPR 2023) ← *this repo*
-- [ ] uniad-reproduced — UniAD (NeurIPS 2022)
-- [ ] anomalygpt-reproduced — AnomalyGPT (AAAI 2024)
-- [ ] comad-reproduced — ComAD (PR 2024)
-- [ ] medclip-reproduced — MedCLIP (EMNLP 2022)
-- [ ] univad-reproduced — UniVAD (CVPR 2025) ← *target*
+- [x] [AF-CLIP reproduced](https://github.com/hammadhaideer/af-clip-reproduced)
+- [x] [AnomalyCLIP reproduced](https://github.com/hammadhaideer/anomalyclip-reproduced)
+- [~] WinCLIP reproduced — image-level near reproduction; pixel localization under debugging
+- [ ] VAND / APRIL-GAN
+- [ ] AdaCLIP
+- [ ] AA-CLIP
 
 ## References
 
-- Jeong et al., *WinCLIP: Zero-/Few-Shot Anomaly Classification and Segmentation*, CVPR 2023
-- Radford et al., *Learning Transferable Visual Models From Natural Language Supervision* (CLIP), ICML 2021
-- Bergmann et al., *MVTec-AD*, CVPR 2019
-- Zou et al., *VisA*, ECCV 2022
+- Jeong et al., **WinCLIP: Zero-/Few-Shot Anomaly Classification and Segmentation**, CVPR 2023.
+- Radford et al., **Learning Transferable Visual Models From Natural Language Supervision**, ICML 2021.
+- Bergmann et al., **The MVTec Anomaly Detection Dataset**, CVPR 2019.
+- Zou et al., **Spot-the-Difference Self-supervised Pre-training for Anomaly Detection and Segmentation**, ECCV 2022.
 
 ## License
 
-MIT
+The independently written wrapper code and documentation in this repository are released under the MIT License. This license does not apply to WinCLIP, Anomalib, OpenCLIP, CLIP checkpoints, or the benchmark datasets.
