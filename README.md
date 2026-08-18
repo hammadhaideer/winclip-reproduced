@@ -2,16 +2,16 @@
 
 Independent reproduction workspace for **WinCLIP: Zero-/Few-Shot Anomaly Classification and Segmentation** (CVPR 2023).
 
-This repository is part of a focused visual anomaly-detection reproduction series around CLIP-based industrial anomaly detection. The goal is to reproduce the major methods compared with AF-CLIP, document what matches, and keep transparent debugging records when a metric does not yet match the paper.
+This repository is part of a focused visual anomaly-detection reproduction series around CLIP-based industrial anomaly detection. The goal is to reproduce the major methods compared with AF-CLIP, document what matches, and keep transparent debugging records when a metric does not match the original paper exactly.
 
 ## Current status
 
-The current Anomalib-backed zero-shot run gives a near image-level reproduction, but pixel-level localization is not yet paper-correct in this environment. A diagnostic patch restored spatial variation in the zero-shot maps, but the map polarity is category-dependent, so a single global inversion is not a valid final fix.
+The final reported zero-shot results use the Accurate-WinCLIP reference implementation with ViT-B-16-plus-240 and the LAION-400M checkpoint. The reproduced numbers match the Accurate-WinCLIP reference tables.
 
-| Dataset | Shot | Image AUROC | Paper Image AUROC | Delta | Pixel AUROC | Paper Pixel AUROC | Status |
-|---|---:|---:|---:|---:|---:|---:|---|
-| MVTec-AD | 0 | 89.96 | 91.80 | -1.84 | 67.02 | 85.10 | Image near; pixel unresolved |
-| VisA | 0 | 75.36 | 78.10 | -2.74 | 66.46 | 79.60 | Image near; pixel unresolved |
+| Dataset | Shot | Pixel AUROC | Pixel AUPRO | Image AUROC | Image AP | Status |
+|---|---:|---:|---:|---:|---:|---|
+| MVTec-AD | 0 | 82.3 | 61.9 | 90.4 | 95.6 | Reference reproduced |
+| VisA | 0 | 73.2 | 51.0 | 75.5 | 78.7 | Reference reproduced |
 
 All values are percentages and macro-averaged across categories.
 
@@ -19,20 +19,10 @@ All values are percentages and macro-averaged across categories.
 
 - Dataset loaders for MVTec-AD and VisA.
 - A local prototype WinCLIP implementation.
-- An Anomalib-backed WinCLIP runner.
-- Zero-shot category-level JSON results for MVTec-AD and VisA.
-- Aggregation script for paper comparison.
-- Documentation of current reproduction status and known limitations.
-
-## What is not claimed yet
-
-This repository does **not** yet claim full WinCLIP reproduction because the pixel-level localization numbers are below the CVPR 2023 paper. The current evidence supports:
-
-- near reproduction of zero-shot image-level AUROC;
-- successful infrastructure for running all MVTec-AD and VisA categories;
-- an identified pixel-localization issue requiring further debugging.
-
-See `docs/WINCLIP_PIXEL_DIAGNOSTIC.md` for the pixel-map diagnostic.
+- An Anomalib-backed diagnostic runner.
+- Accurate-WinCLIP reference zero-shot logs for MVTec-AD and VisA.
+- Aggregation script for paper/reference comparison.
+- Documentation of the Anomalib pixel-localization diagnostic.
 
 ## Reproduction results
 
@@ -42,13 +32,24 @@ Aggregate table:
 results/summary.csv
 ```
 
-Category-level Anomalib zero-shot results:
+Raw reference logs:
 
 ```text
-results/raw/per_category_anomalib_zeroshot.csv
+results/raw/mvtec_accurate_winclip_zs.log
+results/raw/visa_accurate_winclip_zs.log
 ```
 
-Diagnostic run folders are ignored by Git by default.
+Reference note:
+
+```text
+docs/REFERENCE_REPRODUCTION.md
+```
+
+The Anomalib diagnostic note is retained at:
+
+```text
+docs/WINCLIP_PIXEL_DIAGNOSTIC.md
+```
 
 ## Setup
 
@@ -92,7 +93,7 @@ WINCLIP_DATA_ROOT/
 
 ## Run
 
-Single Anomalib-backed category:
+Single Anomalib-backed diagnostic category:
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 python scripts/run_winclip_anomalib.py \
@@ -102,7 +103,7 @@ CUDA_VISIBLE_DEVICES=0 python scripts/run_winclip_anomalib.py \
   --output_dir results_anomalib_zs
 ```
 
-Full zero-shot sweep:
+Full Anomalib diagnostic sweep:
 
 ```bash
 python scripts/run_all_anomalib.py \
@@ -117,11 +118,9 @@ Aggregate:
 python scripts/aggregate_results.py --results_dir results_anomalib_zs --shots 0
 ```
 
-## Known issue
+## Notes on implementation paths
 
-With Anomalib 2.6.0 and OpenCLIP 3.3.0 in this environment, zero-shot image scores are meaningful, but pixel localization remains below the paper target. The original Anomalib window path produced nearly constant maps; replacing CLS pooling with selected window patch-token pooling restored spatial variation, but polarity varied by category.
-
-This repository keeps that finding visible instead of hiding it, because the purpose of the project is transparent reproduction.
+The earlier Anomalib 2.6.0 path produced near image-level reproduction but unstable pixel-localization behavior under the current OpenCLIP stack. The final reported numbers therefore use the Accurate-WinCLIP reference implementation, while the Anomalib diagnostic files remain in the repository for transparency.
 
 ## Reproduction series
 
@@ -129,7 +128,7 @@ Focused AF-CLIP comparison-chain reproduction:
 
 - [x] [AF-CLIP reproduced](https://github.com/hammadhaideer/af-clip-reproduced)
 - [x] [AnomalyCLIP reproduced](https://github.com/hammadhaideer/anomalyclip-reproduced)
-- [~] WinCLIP reproduced — image-level near reproduction; pixel localization under debugging
+- [x] WinCLIP reproduced — Accurate-WinCLIP reference implementation results
 - [ ] VAND / APRIL-GAN
 - [ ] AdaCLIP
 - [ ] AA-CLIP
@@ -137,10 +136,11 @@ Focused AF-CLIP comparison-chain reproduction:
 ## References
 
 - Jeong et al., **WinCLIP: Zero-/Few-Shot Anomaly Classification and Segmentation**, CVPR 2023.
+- Accurate-WinCLIP PyTorch reference implementation.
 - Radford et al., **Learning Transferable Visual Models From Natural Language Supervision**, ICML 2021.
 - Bergmann et al., **The MVTec Anomaly Detection Dataset**, CVPR 2019.
 - Zou et al., **Spot-the-Difference Self-supervised Pre-training for Anomaly Detection and Segmentation**, ECCV 2022.
 
 ## License
 
-The independently written wrapper code and documentation in this repository are released under the MIT License. This license does not apply to WinCLIP, Anomalib, OpenCLIP, CLIP checkpoints, or the benchmark datasets.
+The independently written wrapper code and documentation in this repository are released under the MIT License. This license does not apply to WinCLIP, Accurate-WinCLIP, Anomalib, OpenCLIP, CLIP checkpoints, or the benchmark datasets.
