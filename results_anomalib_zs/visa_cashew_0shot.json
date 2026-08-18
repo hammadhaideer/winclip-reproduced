@@ -1,0 +1,11 @@
+{
+  "dataset": "visa",
+  "category": "cashew",
+  "shot": 0,
+  "image_auroc": 91.74,
+  "pixel_auroc": 60.85,
+  "pixel_aupro": 23.97,
+  "n_test": 150,
+  "runner": "anomalib.WinClipModel",
+  "timing_seconds": 53.2
+}

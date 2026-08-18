@@ -1,0 +1,11 @@
+{
+  "dataset": "visa",
+  "category": "candle",
+  "shot": 0,
+  "image_auroc": 96.87,
+  "pixel_auroc": 78.72,
+  "pixel_aupro": 53.66,
+  "n_test": 200,
+  "runner": "anomalib.WinClipModel",
+  "timing_seconds": 69.0
+}

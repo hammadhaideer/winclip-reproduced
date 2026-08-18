@@ -1,0 +1,11 @@
+{
+  "dataset": "mvtec_ad",
+  "category": "carpet",
+  "shot": 0,
+  "image_auroc": 99.16,
+  "pixel_auroc": 71.45,
+  "pixel_aupro": 20.88,
+  "n_test": 117,
+  "runner": "anomalib.WinClipModel",
+  "timing_seconds": 23.6
+}

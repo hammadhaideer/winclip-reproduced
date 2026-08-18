@@ -1,0 +1,11 @@
+{
+  "dataset": "mvtec_ad",
+  "category": "hazelnut",
+  "shot": 0,
+  "image_auroc": 92.43,
+  "pixel_auroc": 68.82,
+  "pixel_aupro": 22.82,
+  "n_test": 110,
+  "runner": "anomalib.WinClipModel",
+  "timing_seconds": 23.2
+}

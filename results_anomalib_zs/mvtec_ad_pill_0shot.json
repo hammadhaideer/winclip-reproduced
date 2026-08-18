@@ -1,0 +1,11 @@
+{
+  "dataset": "mvtec_ad",
+  "category": "pill",
+  "shot": 0,
+  "image_auroc": 81.48,
+  "pixel_auroc": 23.83,
+  "pixel_aupro": 25.79,
+  "n_test": 167,
+  "runner": "anomalib.WinClipModel",
+  "timing_seconds": 33.9
+}

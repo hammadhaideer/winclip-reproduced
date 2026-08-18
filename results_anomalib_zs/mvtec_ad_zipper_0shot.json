@@ -1,0 +1,11 @@
+{
+  "dataset": "mvtec_ad",
+  "category": "zipper",
+  "shot": 0,
+  "image_auroc": 91.68,
+  "pixel_auroc": 61.16,
+  "pixel_aupro": 23.22,
+  "n_test": 151,
+  "runner": "anomalib.WinClipModel",
+  "timing_seconds": 31.9
+}

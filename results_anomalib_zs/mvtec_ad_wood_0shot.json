@@ -1,0 +1,11 @@
+{
+  "dataset": "mvtec_ad",
+  "category": "wood",
+  "shot": 0,
+  "image_auroc": 97.63,
+  "pixel_auroc": 64.53,
+  "pixel_aupro": 19.01,
+  "n_test": 79,
+  "runner": "anomalib.WinClipModel",
+  "timing_seconds": 16.3
+}

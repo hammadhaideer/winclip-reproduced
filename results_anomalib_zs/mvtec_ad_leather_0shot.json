@@ -1,0 +1,11 @@
+{
+  "dataset": "mvtec_ad",
+  "category": "leather",
+  "shot": 0,
+  "image_auroc": 100.0,
+  "pixel_auroc": 66.56,
+  "pixel_aupro": 19.14,
+  "n_test": 124,
+  "runner": "anomalib.WinClipModel",
+  "timing_seconds": 26.0
+}

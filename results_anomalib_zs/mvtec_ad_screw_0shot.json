@@ -1,0 +1,11 @@
+{
+  "dataset": "mvtec_ad",
+  "category": "screw",
+  "shot": 0,
+  "image_auroc": 72.25,
+  "pixel_auroc": 59.45,
+  "pixel_aupro": 17.95,
+  "n_test": 160,
+  "runner": "anomalib.WinClipModel",
+  "timing_seconds": 33.8
+}

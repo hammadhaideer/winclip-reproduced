@@ -1,0 +1,11 @@
+{
+  "dataset": "mvtec_ad",
+  "category": "transistor",
+  "shot": 0,
+  "image_auroc": 88.75,
+  "pixel_auroc": 86.64,
+  "pixel_aupro": 38.24,
+  "n_test": 100,
+  "runner": "anomalib.WinClipModel",
+  "timing_seconds": 21.1
+}

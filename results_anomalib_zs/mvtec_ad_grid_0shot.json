@@ -1,0 +1,11 @@
+{
+  "dataset": "mvtec_ad",
+  "category": "grid",
+  "shot": 0,
+  "image_auroc": 98.91,
+  "pixel_auroc": 66.45,
+  "pixel_aupro": 25.34,
+  "n_test": 78,
+  "runner": "anomalib.WinClipModel",
+  "timing_seconds": 16.3
+}

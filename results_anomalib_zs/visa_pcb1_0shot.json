@@ -1,0 +1,11 @@
+{
+  "dataset": "visa",
+  "category": "pcb1",
+  "shot": 0,
+  "image_auroc": 69.94,
+  "pixel_auroc": 40.84,
+  "pixel_aupro": 18.82,
+  "n_test": 200,
+  "runner": "anomalib.WinClipModel",
+  "timing_seconds": 71.4
+}

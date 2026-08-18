@@ -1,0 +1,11 @@
+{
+  "dataset": "mvtec_ad",
+  "category": "metal_nut",
+  "shot": 0,
+  "image_auroc": 93.6,
+  "pixel_auroc": 48.43,
+  "pixel_aupro": 23.83,
+  "n_test": 115,
+  "runner": "anomalib.WinClipModel",
+  "timing_seconds": 24.9
+}
