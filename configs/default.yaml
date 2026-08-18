@@ -1,0 +1,53 @@
+method: winclip
+
+backbone:
+  name: ViT-B-16-plus-240
+  pretrained: laion400m_e32
+  input_size: 240
+
+winclip:
+  scales: [2, 3]
+  shot: 0
+  text_ensemble:
+    state_words_normal:
+      - "perfect"
+      - "unblemished"
+      - "flawless"
+      - "without flaw"
+      - "without defect"
+      - "without damage"
+    state_words_anomaly:
+      - "damaged"
+      - "broken"
+      - "with flaw"
+      - "with defect"
+      - "with damage"
+    templates:
+      - "a photo of a {state} {object}."
+      - "a cropped photo of a {state} {object}."
+      - "a close-up photo of a {state} {object}."
+      - "a bright photo of a {state} {object}."
+      - "a dark photo of a {state} {object}."
+      - "a blurry photo of a {state} {object}."
+
+dataset:
+  name: mvtec_ad
+  input_size: 240
+  resize: 256
+  normalize:
+    mean: [0.48145466, 0.4578275, 0.40821073]
+    std: [0.26862954, 0.26130258, 0.27577711]
+
+eval:
+  batch_size: 8
+  num_workers: 4
+  device: cuda
+  seed: 42
+  save_score_maps: true
+  save_qualitative: true
+  qualitative_count: 5
+
+paths:
+  data_root_env: WINCLIP_DATA_ROOT
+  results_dir: results
+  figures_dir: figures
