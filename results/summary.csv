@@ -1,3 +1,3 @@
 dataset,shot,image_auroc,pixel_auroc,pixel_aupro,n_categories,runner,status
-mvtec_ad,0,89.96,61.41,23.01,15,anomalib.WinClipModel,image-level near reproduction; pixel map constant/under investigation
-visa,0,75.36,57.09,25.55,12,anomalib.WinClipModel,image-level near reproduction; pixel map constant/under investigation
+mvtec_ad,0,89.96,67.02,36.80,15,anomalib.WinClipModel+window-patch-pooling,image-level near reproduction; pixel localization unresolved
+visa,0,75.36,66.46,36.82,12,anomalib.WinClipModel+window-patch-pooling,image-level near reproduction; pixel localization unresolved
