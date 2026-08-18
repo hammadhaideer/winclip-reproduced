@@ -6,12 +6,12 @@ This repository is part of a focused visual anomaly-detection reproduction serie
 
 ## Current status
 
-The current Anomalib-backed zero-shot run gives a near image-level reproduction, but pixel-level localization is not yet paper-correct in this environment because the Anomalib zero-shot anomaly maps are nearly constant for tested images.
+The current Anomalib-backed zero-shot run gives a near image-level reproduction, but pixel-level localization is not yet paper-correct in this environment. A diagnostic patch restored spatial variation in the zero-shot maps, but the map polarity is category-dependent, so a single global inversion is not a valid final fix.
 
 | Dataset | Shot | Image AUROC | Paper Image AUROC | Delta | Pixel AUROC | Paper Pixel AUROC | Status |
 |---|---:|---:|---:|---:|---:|---:|---|
-| MVTec-AD | 0 | 89.96 | 91.80 | -1.84 | 61.41 | 85.10 | Image near; pixel under investigation |
-| VisA | 0 | 75.36 | 78.10 | -2.74 | 57.09 | 79.60 | Image near; pixel under investigation |
+| MVTec-AD | 0 | 89.96 | 91.80 | -1.84 | 67.02 | 85.10 | Image near; pixel unresolved |
+| VisA | 0 | 75.36 | 78.10 | -2.74 | 66.46 | 79.60 | Image near; pixel unresolved |
 
 All values are percentages and macro-averaged across categories.
 
@@ -30,7 +30,9 @@ This repository does **not** yet claim full WinCLIP reproduction because the pix
 
 - near reproduction of zero-shot image-level AUROC;
 - successful infrastructure for running all MVTec-AD and VisA categories;
-- an identified pixel-map issue requiring further debugging.
+- an identified pixel-localization issue requiring further debugging.
+
+See `docs/WINCLIP_PIXEL_DIAGNOSTIC.md` for the pixel-map diagnostic.
 
 ## Reproduction results
 
@@ -117,7 +119,7 @@ python scripts/aggregate_results.py --results_dir results_anomalib_zs --shots 0
 
 ## Known issue
 
-With Anomalib 2.6.0 in this environment, zero-shot image scores are meaningful, but the returned zero-shot anomaly maps can be nearly constant for individual images. This explains the gap between reproduced and paper pixel-level AUROC.
+With Anomalib 2.6.0 and OpenCLIP 3.3.0 in this environment, zero-shot image scores are meaningful, but pixel localization remains below the paper target. The original Anomalib window path produced nearly constant maps; replacing CLS pooling with selected window patch-token pooling restored spatial variation, but polarity varied by category.
 
 This repository keeps that finding visible instead of hiding it, because the purpose of the project is transparent reproduction.
 
