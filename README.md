@@ -2,7 +2,7 @@
 
 Independent reproduction workspace for **WinCLIP: Zero-/Few-Shot Anomaly Classification and Segmentation** (CVPR 2023).
 
-This repository is part of a focused visual anomaly-detection reproduction series around CLIP-based industrial anomaly detection. The goal is to reproduce the major methods compared with AF-CLIP, document what matches, and keep transparent debugging records when a metric does not match the original paper exactly.
+This repository is part of a focused visual anomaly-detection reproduction series around CLIP-based industrial anomaly detection. The goal is to reproduce major comparison methods, document what matches, and keep transparent debugging records when a metric does not match the original paper exactly.
 
 ## Current status
 
@@ -59,7 +59,7 @@ conda activate winclip
 pip install anomalib open_clip_torch
 ```
 
-The server used for the current reproduction had no direct access to HuggingFace, so the OpenCLIP checkpoint was downloaded separately and provided locally.
+The server used for the current reproduction had no direct access to Hugging Face, so the OpenCLIP checkpoint was downloaded separately and provided locally.
 
 Required checkpoint:
 
@@ -124,14 +124,12 @@ The earlier Anomalib 2.6.0 path produced near image-level reproduction but unsta
 
 ## Reproduction series
 
-Focused AF-CLIP comparison-chain reproduction:
+Completed public reproduction work:
 
 - [x] [AF-CLIP reproduced](https://github.com/hammadhaideer/af-clip-reproduced)
+- [x] [APRIL-GAN reproduced](https://github.com/hammadhaideer/april-gan-reproduced)
 - [x] [AnomalyCLIP reproduced](https://github.com/hammadhaideer/anomalyclip-reproduced)
 - [x] WinCLIP reproduced — Accurate-WinCLIP reference implementation results
-- [ ] VAND / APRIL-GAN
-- [ ] AdaCLIP
-- [ ] AA-CLIP
 
 ## References
 
